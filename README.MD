@@ -37,14 +37,18 @@ docker compose down
     <td>
       <img src="./captures/signin.gif" width="512" alt="signin">
     </td>
+  </tr>
+  <tr>
     <td>
       <img src="./captures/login.gif" width="512" alt="login">
     </td>
   </tr>
-  <tr?>
+  <tr>
     <td>
       <img src="./captures/create.gif" width="512" alt="create_task">
     </td>
+  </tr>
+  <tr>
     <td>
       <img src="./captures/update.gif" width="512" alt="update_task">
     </td>
