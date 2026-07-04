@@ -35,23 +35,18 @@ docker compose down
 <table>
   <tr>
     <td>
-      <img src="./captures/signin.png" width="512" alt="signin">
+      <img src="./captures/signin.gif" width="512" alt="signin">
     </td>
     <td>
-      <img src="./captures/login.png" width="512" alt="login">
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="./captures/dashboard_e.png" width="512" alt="dashboard_empty">
-    </td>
-    <td>
-      <img src="./captures/task_create.png" width="512" alt="task_create">
+      <img src="./captures/login.gif" width="512" alt="login">
     </td>
   </tr>
-  <tr>
+  <tr?>
     <td>
-      <img src="./captures/task_update.png" width="512" alt="task_update">
+      <img src="./captures/create.gif" width="512" alt="create_task">
+    </td>
+    <td>
+      <img src="./captures/update.gif" width="512" alt="update_task">
     </td>
   </tr>
 </table>
@@ -94,9 +89,9 @@ docker compose down
       <strong><i>Database</i></strong>
     </td>
     <td>
-      Sequelize, PostgreSQL, SQLlite
+      Sequelize, PostgreSQL, SQLlite, AWS RDS
       <br>
-      <img src="https://skillicons.dev/icons?i=sequelize,postgresql,sqlite" height="50" alt="Database-skills-db">
+      <img src="https://skillicons.dev/icons?i=sequelize,postgresql,sqlite,mongodb" height="50" alt="Database-skills-db">
     </td>
   </tr>
   <tr>
