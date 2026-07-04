@@ -1,0 +1,87 @@
+services:
+  api-router:
+    image: nginx:alpine
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - portfolio-todo
+    restart: unless-stopped
+    depends_on:
+      - todo-app
+      - api-gateway
+      - api-users
+      - api-tasks
+
+  todo-app:
+    image: ghcr.io/voncerbau/portfolio-todo-app:v0.1
+    environment:
+      - PORT_PROD=3000
+      - NEXT_API_URL_CONTAINER=http://api-gateway:3000
+      - NEXT_SESSION_SECRET=STRING_FOR_SESSION_SECRET
+      - NEXT_COOKIE_NAME=STRING_FOR_COOKIE_NAME
+    networks:
+      - portfolio-todo
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+
+  api-gateway:
+    image: ghcr.io/voncerbau/portfolio-todo-api-gateway:v0.1
+    environment:
+      - PORT_CONTAINER=3000
+      - USERS_SERVICE_URL=http://api-users:3000
+      - TODO_SERVICE_URL=http://api-tasks:3000
+    networks:
+      - portfolio-todo
+    restart: unless-stopped
+    depends_on:
+      - api-users
+      - api-tasks
+
+  api-users:
+    image: ghcr.io/voncerbau/portfolio-todo-api-users:v0.1
+    environment:
+      - PORT_CONTAINER=3000
+      - DB_HOST=api-data
+      - DB_PORT=5432
+      - DB_USER=db-todo-master
+      - DB_NAME=db-todo-users
+      - DB_PASS=DB_SECRET_PASSWORD
+      - JWT_SECRET=STRING_FOR_JWT_SECRET
+      - SESSION_SECRET=STRING_FOR_SESSION_SECRET
+      - COOKIE_NAME=STRING_FOR_COOKIE_NAME
+    command: sh -c "yarn db:migrate && yarn start:prod"
+    networks:
+      - portfolio-todo
+    restart: unless-stopped
+
+  api-tasks:
+    image: ghcr.io/voncerbau/portfolio-todo-api-tasks:v0.1
+    environment:
+      - PORT_CONTAINER=3000
+      - DB_HOST=api-data
+      - DB_PORT=5432
+      - DB_USER=db-todo-master
+      - DB_NAME=db-todo-tasks
+      - DB_PASS=DB_SECRET_PASSWORD
+      - JWT_SECRET=STRING_FOR_JWT_SECRET
+      - SESSION_SECRET=STRING_FOR_SESSION_SECRET
+      - COOKIE_NAME=STRING_FOR_COOKIE_NAME
+    command: sh -c "yarn db:migrate && yarn start:prod"
+    networks:
+      - portfolio-todo
+    restart: unless-stopped
+
+  api-data:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=db-todo-master
+      - POSTGRES_PASSWORD=DB_SECRET_PASSWORD
+    networks:
+      - portfolio-todo
+
+networks:
+  portfolio-todo:
+    driver: bridge
